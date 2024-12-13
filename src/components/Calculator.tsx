@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
 import '../CSS/Calculator.css';
 
-const Calculator: React.FC = () => {
-    const [display, setDisplay] = useState('');
+interface CalculatorProps {
+    currentNumber?: string;
+}
+
+const Calculator: React.FC<CalculatorProps> = ({ currentNumber = '' }) => {
+    const [display, setDisplay] = useState(currentNumber);
 
     const handleButtonClick = (value: string) => {
         setDisplay(display + value);
-    };
+        if (value === '=') {
+            try {
+                setDisplay(eval(display).toString());
+            } catch (error) {
+                setDisplay('Error');
+            }
+        };
+    }
 
     return (
         <main className='container'>
             <div className='calculator'>
                 <div className='display'>
-                <p>{display}</p>
+                    <p>{display}</p>
                 </div>
                 <div className='buttons'>
                     <button className='button' onClick={() => handleButtonClick('1')}>1</button>
